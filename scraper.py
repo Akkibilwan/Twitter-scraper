@@ -1,4 +1,22 @@
 """
+# scraper.py
+
+import subprocess, sys
+
+# Ensure Playwright's browsers are present at runtime:
+subprocess.run(
+    [sys.executable, "-m", "playwright", "install", "--with-deps"],
+    check=True
+)
+
+# Now safe to import and use Playwright
+from playwright.sync_api import sync_playwright
+import json, random
+from time import sleep
+
+class TwitterScraper:
+    …
+
 Module: scraper.py
 Provides TwitterScraper class that uses Playwright to scrape tweets.
 """
