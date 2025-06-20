@@ -1,7 +1,4 @@
 # app.py
-"""
-Streamlit UI for Twitter scraper.
-"""
 
 import streamlit as st
 import pandas as pd
@@ -14,11 +11,11 @@ st.title("🐦 Twitter Scraper (No API)")
 
 # Sidebar inputs
 st.sidebar.header("Search Settings")
-keyword      = st.sidebar.text_input("Keyword or Hashtag", value="streamlit")
-limit        = st.sidebar.number_input("Number of Tweets", min_value=10, max_value=500, value=50, step=10)
+keyword = st.sidebar.text_input("Keyword or Hashtag", value="streamlit")
+limit = st.sidebar.number_input("Number of Tweets", min_value=10, max_value=500, value=50, step=10)
 use_headless = st.sidebar.checkbox("Headless Browser", value=True)
 
-# Load cookies/proxies from Streamlit Secrets, if provided
+# Load cookies/proxies from Secrets
 cookies_path = None
 if "cookies" in st.secrets:
     tf = tempfile.NamedTemporaryFile(delete=False, suffix=".json")
@@ -37,6 +34,7 @@ if st.sidebar.button("Scrape"):
         cookies_path=cookies_path,
         proxies_path=proxies_path
     )
+
     with st.spinner(f"Scraping {limit} tweets for “{keyword}”…"):
         data = scraper.scrape(keyword, limit)
 
@@ -47,10 +45,11 @@ if st.sidebar.button("Scrape"):
         st.success(f"Fetched {len(df)} tweets.")
         st.dataframe(df)
 
-        # Download buttons
+        # CSV download
         csv = df.to_csv(index=False).encode("utf-8")
         st.download_button("Download CSV", data=csv, file_name="tweets.csv", mime="text/csv")
 
+        # JSON download
         records = df.to_dict(orient="records")
         js = json.dumps(records, indent=2)
         st.download_button("Download JSON", data=js, file_name="tweets.json", mime="application/json")
