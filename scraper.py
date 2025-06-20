@@ -1,11 +1,25 @@
 # scraper.py
-# Ensure Playwright’s browsers are installed at runtime before we import/play
-import subprocess, sys
-subprocess.run(
-    [sys.executable, "-m", "playwright", "install", "--with-deps"],
-    check=True
-)
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Runtime fallback: on first import, download the Chromium browser only.
+# This avoids needing OS‐level dependencies and still lets `p.chromium.launch()` find the binary.
+# ──────────────────────────────────────────────────────────────────────────────
+import subprocess, sys
+
+try:
+    subprocess.run(
+        [sys.executable, "-m", "playwright", "install", "chromium"],
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+except subprocess.CalledProcessError:
+    # If it fails (e.g. already installed), we can continue.
+    pass
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Now import Playwright and the rest
+# ──────────────────────────────────────────────────────────────────────────────
 from playwright.sync_api import sync_playwright
 import json
 import random
