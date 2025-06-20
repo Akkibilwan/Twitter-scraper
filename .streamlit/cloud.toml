@@ -1,0 +1,5 @@
+# .streamlit/cloud.toml
+
+[build]
+# after pip install, download Playwright browsers:
+installCommand = "playwright install"
