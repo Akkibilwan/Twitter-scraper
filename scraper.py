@@ -1,21 +1,26 @@
 # scraper.py
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Runtime fallback: on first import, download the Chromium browser only.
+# Runtime fallback: on first import, download the Chromium browser.
 # This avoids needing OS‐level dependencies and still lets `p.chromium.launch()` find the binary.
 # ──────────────────────────────────────────────────────────────────────────────
 import subprocess, sys
 
+# Run the installation command and print output to the logs
+print("─" * 80)
+print("Installing Playwright's Chromium browser...")
 try:
     subprocess.run(
         [sys.executable, "-m", "playwright", "install", "chromium"],
         check=True,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
     )
-except subprocess.CalledProcessError:
-    # If it fails (e.g. already installed), we can continue.
-    pass
+    print("Chromium installation successful.")
+except (subprocess.CalledProcessError, FileNotFoundError) as e:
+    print(f"Error during Chromium installation: {e}")
+    # Exit gracefully if installation fails
+    sys.exit(1)
+print("─" * 80)
+
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Now import Playwright and the rest
