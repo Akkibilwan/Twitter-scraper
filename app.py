@@ -1,6 +1,6 @@
+# app.py
 """
-Streamlit UI: app.py
-Uses TwitterScraper to fetch and display tweets.
+Streamlit UI for Twitter scraper.
 """
 
 import streamlit as st
@@ -18,7 +18,7 @@ keyword      = st.sidebar.text_input("Keyword or Hashtag", value="streamlit")
 limit        = st.sidebar.number_input("Number of Tweets", min_value=10, max_value=500, value=50, step=10)
 use_headless = st.sidebar.checkbox("Headless Browser", value=True)
 
-# Load cookies/proxies from Streamlit Secrets (if provided)
+# Load cookies/proxies from Streamlit Secrets, if provided
 cookies_path = None
 if "cookies" in st.secrets:
     tf = tempfile.NamedTemporaryFile(delete=False, suffix=".json")
