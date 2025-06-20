@@ -1,30 +1,15 @@
-"""
 # scraper.py
-
+# Ensure Playwright’s browsers are installed at runtime before we import/play
 import subprocess, sys
-
-# Ensure Playwright's browsers are present at runtime:
 subprocess.run(
     [sys.executable, "-m", "playwright", "install", "--with-deps"],
     check=True
 )
 
-# Now safe to import and use Playwright
 from playwright.sync_api import sync_playwright
-import json, random
-from time import sleep
-
-class TwitterScraper:
-    …
-
-Module: scraper.py
-Provides TwitterScraper class that uses Playwright to scrape tweets.
-"""
-
 import json
 import random
 from time import sleep
-from playwright.sync_api import sync_playwright
 
 class TwitterScraper:
     def __init__(self, headless: bool = True, cookies_path: str = None, proxies_path: str = None):
@@ -58,6 +43,7 @@ class TwitterScraper:
             browser_args = {}
             if proxy:
                 browser_args['proxy'] = {'server': proxy}
+
             browser = p.chromium.launch(headless=self.headless, **browser_args)
             context = browser.new_context()
             if self.cookies:
@@ -90,6 +76,7 @@ class TwitterScraper:
                     except Exception:
                         continue
 
+                # scroll down and wait
                 page.evaluate("window.scrollBy(0, document.body.scrollHeight)")
                 sleep(1)
                 new_height = page.evaluate("() => document.body.scrollHeight")
