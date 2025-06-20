@@ -1,5 +1,5 @@
 # .streamlit/cloud.toml
-
 [build]
-# after pip install, download Playwright browsers:
-installCommand = "playwright install"
+# 1) install your Python requirements
+# 2) immediately install Playwright browsers
+installCommand = "pip install -r requirements.txt && playwright install"
